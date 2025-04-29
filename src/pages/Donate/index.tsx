@@ -1,4 +1,3 @@
-import React from "react";
 import { Container, Typography, Box, Card, Divider } from "@mui/material";
 
 export const Donate = () => {
