@@ -60,7 +60,8 @@ export const Home = ({
     setError("");
 
     try {
-      const apiUrl = "https://giancarlonsito.pythonanywhere.com/generate-image";
+      const apiUrl =
+        "https://image-generator-app-one.vercel.app/generate-image";
       const response = await axios.post<{ image_url: string }>(apiUrl, {
         prompt,
       });
