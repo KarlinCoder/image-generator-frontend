@@ -40,7 +40,7 @@ export const Donate = () => {
           sx={{
             background:
               theme.palette.mode === "dark"
-                ? "linear-gradient(90deg, #8E2DE2, #4A00E0)"
+                ? "linear-gradient(90deg, #00B4DB, #0083B0)"
                 : "linear-gradient(90deg, #4A00E0, #8E2DE2)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
@@ -103,14 +103,20 @@ export const Donate = () => {
             fullWidth
             startIcon={<FaMobileAlt />}
             sx={{
-              background: "linear-gradient(90deg, #4A00E0, #8E2DE2)",
+              background:
+                theme.palette.mode === "dark"
+                  ? "linear-gradient(90deg, #00B4DB, #0083B0)"
+                  : "linear-gradient(90deg, #4A00E0, #8E2DE2)",
               borderRadius: 2,
               fontWeight: 500,
               textTransform: "none",
               py: 1,
               fontSize: "0.875rem",
               "&:hover": {
-                background: "linear-gradient(90deg, #8E2DE2, #4A00E0)",
+                background:
+                  theme.palette.mode === "dark"
+                    ? "linear-gradient(90deg, #0083B0, #00B4DB)"
+                    : "linear-gradient(90deg, #8E2DE2, #4A00E0)",
               },
             }}
           >
