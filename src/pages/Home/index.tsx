@@ -166,7 +166,7 @@ export const Home = ({
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="md">
       {/* Campo de texto y botón */}
       <Box
         sx={{
