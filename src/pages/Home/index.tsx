@@ -8,6 +8,10 @@ import {
   Alert,
   Typography,
   LinearProgress,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
 } from "@mui/material";
 import { tips } from "../../utils/tips";
 import { useState } from "react";
@@ -47,6 +51,28 @@ export const Home = ({
   const [error, setError] = useState("");
   const [downloadProgress, setDownloadProgress] = useState(0); // Estado de progreso
   const [isDownloading, setIsDownloading] = useState(false); // Estado de descarga
+  const [styleType, setStyleType] = useState("Realista"); // Nuevo estado de estilo
+
+  const styleOptions = [
+    "Realista",
+    "Abstracto",
+    "Icono",
+    "Logo",
+    "Pintura",
+    "Ghibli",
+    "Anime",
+    "Futurista",
+    "Cyberpunk",
+    "Gótico",
+    "Cartoon",
+    "Minimalista",
+    "Steampunk",
+    "Vintage",
+    "Surrealista",
+    "Low Poly",
+    "Sketch",
+    "Pixel Art",
+  ];
 
   const handlePrompt = (text: string) => {
     setPrompt(text);
@@ -62,8 +88,11 @@ export const Home = ({
     try {
       const apiUrl =
         "https://image-generator-app-one.vercel.app/generate-image";
+
+      const fullPrompt = `${prompt}. HAZ QUE SE VEA LO MAS ${styleType.toUpperCase()} POSIBLE`;
+
       const response = await axios.post<{ image_url: string }>(apiUrl, {
-        prompt,
+        prompt: fullPrompt,
       });
 
       const backendUrl = response.data.image_url;
@@ -144,18 +173,37 @@ export const Home = ({
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          py: 5,
+          py: 3,
         }}
       >
         <TextField
           value={prompt}
           onChange={(event) => handlePrompt(event.target.value)}
           multiline
-          rows={6}
+          rows={4}
           fullWidth
           placeholder={placeholderTip}
           disabled={isLoading}
         />
+
+        {/* Selector de estilo */}
+        <FormControl fullWidth sx={{ mt: 2 }}>
+          <InputLabel id="style-select-label">Estilo</InputLabel>
+          <Select
+            labelId="style-select-label"
+            value={styleType}
+            label="Estilo"
+            onChange={(e) => setStyleType(e.target.value as string)}
+            size="small"
+          >
+            {styleOptions.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
         <Button
           onClick={handleGenerateImage}
           variant="contained"
@@ -170,7 +218,7 @@ export const Home = ({
 
       {/* Mostrar mensaje de error */}
       {error && (
-        <Box sx={{ px: 2 }}>
+        <Box sx={{ px: 2, mt: 2 }}>
           <Alert severity="error">{error}</Alert>
         </Box>
       )}
