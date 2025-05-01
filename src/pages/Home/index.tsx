@@ -9,9 +9,11 @@ import {
   Typography,
   LinearProgress,
   Select,
-  MenuItem,
   InputLabel,
   FormControl,
+  List,
+  ListItem,
+  ListItemButton,
 } from "@mui/material";
 import { tips } from "../../utils/tips";
 import { useState } from "react";
@@ -183,7 +185,10 @@ export const Home = ({
           rows={4}
           fullWidth
           placeholder={placeholderTip}
-          disabled={isLoading}
+          sx={{
+            backgroundColor: "#0004",
+            backdropFilter: "blur(10px)",
+          }}
         />
 
         {/* Selector de estilo */}
@@ -195,12 +200,25 @@ export const Home = ({
             label="Estilo"
             onChange={(e) => setStyleType(e.target.value as string)}
             size="small"
+            sx={{
+              backgroundColor: "#0004",
+              backdropFilter: "blur(10px)",
+            }}
           >
-            {styleOptions.map((option) => (
-              <MenuItem key={option} value={option}>
-                {option}
-              </MenuItem>
-            ))}
+            <List disablePadding>
+              {styleOptions.map((option) => (
+                <ListItem
+                  key={option}
+                  value={option}
+                  sx={{
+                    backgroundColor: "#0004",
+                  }}
+                >
+                  {option}
+                  <ListItemButton>{option}</ListItemButton>
+                </ListItem>
+              ))}
+            </List>
           </Select>
         </FormControl>
 
