@@ -8,11 +8,17 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  styled,
   Toolbar,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+
+const Img = styled("img")({
+  height: "30px",
+  borderRadius: "100%",
+});
 
 export const Navbar = ({ isGenerating }: { isGenerating: boolean }) => {
   const [open, setOpen] = useState(false);
@@ -30,8 +36,23 @@ export const Navbar = ({ isGenerating }: { isGenerating: boolean }) => {
 
   return (
     <>
-      <AppBar position="static">
-        <Toolbar sx={{ justifyContent: "center" }}>
+      <AppBar
+        position="sticky"
+        sx={{
+          backgroundColor: "#0005",
+          backdropFilter: "blur(10px)",
+          borderTop: "1px solid #fff2",
+        }}
+      >
+        <Toolbar
+          sx={{
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "13px",
+            backgroundColor: "#0008",
+          }}
+        >
+          <Img src="/logo.webp" />
           <Typography
             variant="h6"
             fontFamily="Pacifico"
@@ -42,7 +63,7 @@ export const Navbar = ({ isGenerating }: { isGenerating: boolean }) => {
           </Typography>
         </Toolbar>
         <Box
-          sx={{ bgcolor: "#0003", display: "flex", justifyContent: "center" }}
+          sx={{ bgcolor: "#0005", display: "flex", justifyContent: "center" }}
         >
           <ButtonGroup variant="text" size="small" component="div">
             <Button onClick={() => handleNavigate("/")} sx={{ px: 1.5 }}>

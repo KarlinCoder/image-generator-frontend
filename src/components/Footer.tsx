@@ -5,13 +5,10 @@ export const Footer = () => {
     <Box
       component="footer"
       sx={{
-        backgroundColor: (theme) =>
-          theme.palette.mode === "light"
-            ? theme.palette.grey[200]
-            : theme.palette.grey[900],
-        color: (theme) => theme.palette.text.secondary,
         py: 3,
-        mt: 4,
+        backgroundColor: "#0005",
+        backdropFilter: "blur(10px)",
+        borderTop: "1px solid #fff2",
       }}
     >
       <Container maxWidth="sm">
