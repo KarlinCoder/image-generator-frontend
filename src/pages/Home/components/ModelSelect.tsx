@@ -24,11 +24,11 @@ export const ModelSelect: React.FC<Props> = ({ value, setValue }) => {
 
   return (
     <FormControl fullWidth sx={{ mt: 2 }}>
-      <InputLabel id="style-select-label">Modelo</InputLabel>
+      <InputLabel id="style-select-label">Modelo de IA:</InputLabel>
       <Select
         labelId="style-select-label"
         value={value.name}
-        label="Modelo"
+        label="Modelo de IA:"
         onChange={handleChange}
         size="small"
         MenuProps={{

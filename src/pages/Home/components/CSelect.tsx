@@ -15,11 +15,11 @@ interface Props {
 export const CSelect: React.FC<Props> = ({ value, setValue }) => {
   return (
     <FormControl fullWidth sx={{ mt: 2 }}>
-      <InputLabel id="style-select-label">Estilo</InputLabel>
+      <InputLabel id="style-select-label">Estilo:</InputLabel>
       <Select
         labelId="style-select-label"
         value={value}
-        label="Estilo"
+        label="Estilo:"
         onChange={(e) => setValue(e.target.value as string)}
         size="small"
         MenuProps={{
