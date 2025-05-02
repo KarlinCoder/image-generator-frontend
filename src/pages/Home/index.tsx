@@ -25,7 +25,6 @@ import {
 } from "@mui/material";
 import { IModel } from "../../utils/models";
 import { ModelSelect } from "./components/ModelSelect";
-import { IoHelpBuoyOutline } from "react-icons/io5";
 import { Help } from "@mui/icons-material";
 
 // Estilo personalizado para mantener proporción 1:1 (cuadrado)
