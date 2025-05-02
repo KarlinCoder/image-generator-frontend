@@ -20,6 +20,9 @@ importers:
       '@fontsource/pacifico':
         specifier: ^5.2.5
         version: 5.2.5
+      '@fontsource/poppins':
+        specifier: ^5.2.5
+        version: 5.2.5
       '@fontsource/roboto':
         specifier: ^5.2.5
         version: 5.2.5
@@ -424,6 +427,9 @@ packages:
 
   '@fontsource/pacifico@5.2.5':
     resolution: {integrity: sha512-JpimzPRR6Hh2jIj3x+6Wzk8vBv9IdInuu2y0muGnpQQIOscyQdM4i8bSSszgOoH4WD3PuUpMGHCi4ZBNtoekWA==}
+
+  '@fontsource/poppins@5.2.5':
+    resolution: {integrity: sha512-1S3k45pZOz2jqGPPqKw0in3uxFwnB+d5jSU8Tp9YwH/dIJptE3jdkQbYN0QD861GtuOpn6QhPW/yKt1w7hVRBQ==}
 
   '@fontsource/roboto@5.2.5':
     resolution: {integrity: sha512-70r2UZ0raqLn5W+sPeKhqlf8wGvUXFWlofaDlcbt/S3d06+17gXKr3VNqDODB0I1ASme3dGT5OJj9NABt7OTZQ==}
@@ -1858,6 +1864,8 @@ snapshots:
   '@fontsource/delius@5.2.5': {}
 
   '@fontsource/pacifico@5.2.5': {}
+
+  '@fontsource/poppins@5.2.5': {}
 
   '@fontsource/roboto@5.2.5': {}
 

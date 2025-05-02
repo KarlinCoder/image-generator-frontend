@@ -1,6 +1,8 @@
 @import "@fontsource/pacifico/400.css";
 @import "@fontsource/roboto/400.css";
 @import "@fontsource/delius/400.css";
+@import "@fontsource/poppins/400.css";
+
 @import "./scrollbar.css";
 body {
   background-image: url("/bg.webp");

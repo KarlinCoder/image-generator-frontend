@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.14.0",
     "@fontsource/delius": "^5.2.5",
     "@fontsource/pacifico": "^5.2.5",
+    "@fontsource/poppins": "^5.2.5",
     "@fontsource/roboto": "^5.2.5",
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
