@@ -8,17 +8,16 @@ import {
   Alert,
   Typography,
   LinearProgress,
-  Select,
-  InputLabel,
   FormControl,
-  MenuItem,
 } from "@mui/material";
 import { tips } from "../../utils/tips";
 import { useState } from "react";
 import { IoMdDownload } from "react-icons/io";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 import axios from "axios";
-import { FaPaintBrush } from "react-icons/fa";
+import { styleDescriptions } from "../../utils/styleDescriptions";
+import { StyleSelector } from "./components/StyleSelector";
+import { useImageDownloader } from "../../hooks/useImageDownloader";
 
 // Estilo personalizado para mantener proporción 1:1 (cuadrado)
 const SquareBox = styled(Box)({
@@ -50,30 +49,15 @@ export const Home = ({
   const [prompt, setPrompt] = useState("");
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [error, setError] = useState("");
-  const [downloadProgress, setDownloadProgress] = useState(0); // Estado de progreso
-  const [isDownloading, setIsDownloading] = useState(false); // Estado de descarga
+  const { isDownloading, downloadProgress, handleDownload } =
+    useImageDownloader({
+      imageUrl,
+    });
   const [styleType, setStyleType] = useState("Realista"); // Nuevo estado de estilo
 
-  const styleOptions = [
-    "Realista",
-    "Abstracto",
-    "Icono",
-    "Logo",
-    "Pintura",
-    "Ghibli",
-    "Anime",
-    "Futurista",
-    "Cyberpunk",
-    "Gótico",
-    "Cartoon",
-    "Minimalista",
-    "Steampunk",
-    "Vintage",
-    "Surrealista",
-    "Low Poly",
-    "Sketch",
-    "Pixel Art",
-  ];
+  const handleStyleType = (style: string) => {
+    setStyleType(style);
+  };
 
   const handlePrompt = (text: string) => {
     setPrompt(text);
@@ -90,7 +74,7 @@ export const Home = ({
       const apiUrl =
         "https://image-generator-app-one.vercel.app/generate-image";
 
-      const fullPrompt = `${prompt}. HAZ QUE SE VEA LO MAS ${styleType.toUpperCase()} POSIBLE`;
+      const fullPrompt = `${prompt}. ${styleDescriptions[styleType]}`;
 
       const response = await axios.post<{ image_url: string }>(apiUrl, {
         prompt: fullPrompt,
@@ -110,59 +94,6 @@ export const Home = ({
     } finally {
       setIsLoading(false);
       handleGenerating(false);
-    }
-  };
-
-  const handleDownload = async () => {
-    if (!imageUrl) return;
-
-    setIsDownloading(true);
-    setDownloadProgress(0);
-
-    try {
-      const response = await fetch(imageUrl);
-
-      // Simular progreso leyendo el tamaño total si es posible
-      const contentLength = response.headers.get("content-length");
-      let downloaded = 0;
-
-      const reader = response.body?.getReader();
-      const chunks: Uint8Array[] = [];
-
-      if (reader && contentLength) {
-        const total = parseInt(contentLength, 10);
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          chunks.push(value);
-          downloaded += value.byteLength;
-          const progress = Math.round((downloaded / total) * 100);
-          setDownloadProgress(progress);
-        }
-      } else {
-        // Si no hay Content-Length, solo leemos sin porcentaje preciso
-        const { value, done } = await reader!.read();
-        if (!done) {
-          chunks.push(value);
-          setDownloadProgress(100);
-        }
-      }
-
-      const blob = new Blob(chunks);
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "mi-imagen.jpg");
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (err) {
-      console.error("Error descargando la imagen:", err);
-      alert("No se pudo descargar la imagen.");
-    } finally {
-      setIsDownloading(false);
-      setDownloadProgress(0);
     }
   };
 
@@ -193,59 +124,7 @@ export const Home = ({
         </FormControl>
 
         {/* Selector de estilo */}
-        <FormControl fullWidth sx={{ mt: 2 }}>
-          <InputLabel id="style-select-label">Estilo</InputLabel>
-          <Select
-            labelId="style-select-label"
-            value={styleType}
-            label="Estilo"
-            onChange={(e) => setStyleType(e.target.value as string)}
-            size="small"
-            MenuProps={{
-              slotProps: {
-                paper: {
-                  sx: {
-                    "& .MuiList-root": {
-                      padding: 0,
-                    },
-                    maxHeight: 300,
-                    backgroundColor: "#0005",
-                    backdropFilter: "blur(15px)",
-                    color: "#eee",
-                  },
-                },
-              },
-            }}
-            sx={{
-              // fontSize: ".9rem",
-              backgroundColor: "#0004",
-              backdropFilter: "blur(10px)",
-
-              "& .MuiSelect-select": {
-                display: "flex",
-                alignItems: "center",
-                gap: "7px",
-              },
-            }}
-          >
-            {styleOptions.map((option) => (
-              <MenuItem
-                key={option}
-                value={option}
-                sx={{
-                  backgroundColor: "#0004",
-                  display: "flex",
-                  gap: "7px",
-                  alignItems: "center",
-                }}
-              >
-                <FaPaintBrush />
-                <Typography fontSize=".9rem">{option}</Typography>
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
+        <StyleSelector styleType={styleType} setStyleType={handleStyleType} />
         <Button
           onClick={handleGenerateImage}
           variant="contained"
