@@ -8,19 +8,19 @@ import { FaPaintBrush } from "react-icons/fa";
 import { styleOptions } from "../../../utils/styleOptions";
 
 interface Props {
-  styleType: string;
-  setStyleType: (style: string) => void;
+  value: string;
+  setValue: (style: string) => void;
 }
 
-export const StyleSelector: React.FC<Props> = ({ styleType, setStyleType }) => {
+export const CSelect: React.FC<Props> = ({ value, setValue }) => {
   return (
     <FormControl fullWidth sx={{ mt: 2 }}>
       <InputLabel id="style-select-label">Estilo</InputLabel>
       <Select
         labelId="style-select-label"
-        value={styleType}
+        value={value}
         label="Estilo"
-        onChange={(e) => setStyleType(e.target.value as string)}
+        onChange={(e) => setValue(e.target.value as string)}
         size="small"
         MenuProps={{
           slotProps: {

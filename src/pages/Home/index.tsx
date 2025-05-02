@@ -14,10 +14,11 @@ import { IoMdDownload } from "react-icons/io";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 import axios from "axios";
 import { styleDescriptions } from "../../utils/styleDescriptions";
-import { StyleSelector } from "./components/StyleSelector";
+import { CSelect } from "./components/CSelect";
 import { useImageDownloader } from "../../hooks/useImageDownloader";
 import { styled } from "@mui/material";
-import { translatePrompt } from "../../lib/translatePrompt";
+import { IModel } from "../../utils/models";
+import { ModelSelect } from "./components/ModelSelect";
 
 // Estilo personalizado para mantener proporción 1:1 (cuadrado)
 const SquareBox = styled(Box)({
@@ -53,7 +54,17 @@ export const Home = ({
     useImageDownloader({
       imageUrl,
     });
-  const [styleType, setStyleType] = useState("Realista"); // Nuevo estado de estilo
+  const [styleType, setStyleType] = useState("Realista");
+  const [model, setModel] = useState<IModel>({
+    name: "flux",
+    base_provider: "Black Forest Labs",
+    providers: "5+ Providers",
+    website: "github.com/black-forest-labs/flux",
+  });
+
+  const handleModel = (m: IModel) => {
+    setModel(m);
+  };
 
   const handleStyleType = (style: string) => {
     setStyleType(style);
@@ -69,13 +80,6 @@ export const Home = ({
     setIsLoading(true);
     setImageUrl(null);
     setError("");
-
-    try {
-      const translatedPrompt = await translatePrompt(prompt);
-      console.log(translatedPrompt);
-    } catch (err) {
-      console.log(err);
-    }
 
     try {
       const apiUrl =
@@ -131,7 +135,8 @@ export const Home = ({
         </FormControl>
 
         {/* Selector de estilo */}
-        <StyleSelector styleType={styleType} setStyleType={handleStyleType} />
+        <CSelect value={styleType} setValue={handleStyleType} />
+        <ModelSelect value={model} setValue={handleModel} />
         <Button
           onClick={handleGenerateImage}
           variant="contained"
