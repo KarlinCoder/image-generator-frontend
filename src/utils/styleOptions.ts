@@ -17,4 +17,5 @@ export const styleOptions = [
   "Low Poly",
   "Sketch",
   "Pixel Art",
+  "Romántico",
 ];

@@ -51,4 +51,6 @@ export const styleDescriptions: Record<string, string> = {
 
   "Pixel Art":
     "Render in authentic pixel art style with a strict grid-based resolution, limited color palette, and deliberate blocky pixels. Recreate the charm of 8-bit and 16-bit video games with sprite-like characters, isometric tiles, and chunky outlines. Avoid anti-aliasing and embrace the retro aesthetic of early gaming consoles, including chiptune-inspired visuals and lo-fi charm.",
+  Romántico:
+    "Create a soft, dreamy, and emotionally evocative scene with delicate aesthetics, warm lighting, and poetic compositions. Use gentle pastel tones, blooming flowers, flowing fabrics, and tender gestures between subjects to convey love, nostalgia, or serenity. Incorporate natural elements like golden sunsets, candlelit dinners, or misty gardens to enhance the atmosphere. The style should evoke classic romance paintings—think soft-focus backgrounds, subtle luminosity, and an overall sense of harmony and intimacy.",
 };
