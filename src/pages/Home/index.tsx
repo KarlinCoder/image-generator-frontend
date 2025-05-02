@@ -77,7 +77,6 @@ export const Home = ({
 
   const handleCheckbox = () => {
     setTranslatePrompt(!translatePrompt);
-    console.log(!translatePrompt);
   };
   const handleHelpOpen = () => {
     setOpenHelp(true);
@@ -199,8 +198,7 @@ export const Home = ({
                 sx: {
                   borderRadius: "12px",
                   maxWidth: "500px",
-                  backgroundColor: "#0002",
-                  backdropFilter: "blur(10px)",
+                  backgroundColor: "#000c",
                 },
               },
             }}
