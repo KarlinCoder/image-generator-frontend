@@ -12,12 +12,14 @@ import {
   InputLabel,
   FormControl,
   MenuItem,
+  FormHelperText,
 } from "@mui/material";
 import { tips } from "../../utils/tips";
 import { useState } from "react";
 import { IoMdDownload } from "react-icons/io";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 import axios from "axios";
+import { FaPaintBrush } from "react-icons/fa";
 
 // Estilo personalizado para mantener proporción 1:1 (cuadrado)
 const SquareBox = styled(Box)({
@@ -176,18 +178,20 @@ export const Home = ({
           py: 3,
         }}
       >
-        <TextField
-          value={prompt}
-          onChange={(event) => handlePrompt(event.target.value)}
-          multiline
-          rows={4}
-          fullWidth
-          placeholder={placeholderTip}
-          sx={{
-            backgroundColor: "#0004",
-            backdropFilter: "blur(10px)",
-          }}
-        />
+        <FormControl fullWidth>
+          <TextField
+            label="Prompt:"
+            value={prompt}
+            onChange={(event) => handlePrompt(event.target.value)}
+            multiline
+            rows={4}
+            placeholder={placeholderTip}
+            sx={{
+              backgroundColor: "#0004",
+              backdropFilter: "blur(10px)",
+            }}
+          />
+        </FormControl>
 
         {/* Selector de estilo */}
         <FormControl fullWidth sx={{ mt: 2 }}>
@@ -198,9 +202,30 @@ export const Home = ({
             label="Estilo"
             onChange={(e) => setStyleType(e.target.value as string)}
             size="small"
+            MenuProps={{
+              slotProps: {
+                paper: {
+                  sx: {
+                    "& .MuiList-root": {
+                      padding: 0,
+                    },
+                    maxHeight: 300,
+                    backgroundColor: "#0005",
+                    backdropFilter: "blur(15px)",
+                    color: "#eee",
+                  },
+                },
+              },
+            }}
             sx={{
               backgroundColor: "#0004",
               backdropFilter: "blur(10px)",
+
+              "& .MuiSelect-select": {
+                display: "flex",
+                alignItems: "center",
+                gap: "7px",
+              },
             }}
           >
             {styleOptions.map((option) => (
@@ -209,12 +234,17 @@ export const Home = ({
                 value={option}
                 sx={{
                   backgroundColor: "#0004",
+                  display: "flex",
+                  gap: "7px",
+                  alignItems: "center",
                 }}
               >
+                <FaPaintBrush />
                 {option}
               </MenuItem>
             ))}
           </Select>
+          <FormHelperText>El estilo influye</FormHelperText>
         </FormControl>
 
         <Button
