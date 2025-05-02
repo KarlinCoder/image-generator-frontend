@@ -29,7 +29,16 @@ import {
 import { IModel } from "../../utils/models";
 import { ModelSelect } from "./components/ModelSelect";
 import { Help } from "@mui/icons-material";
+import { addRequestToDB } from "../../lib/addRequestToDB";
 
+interface IImageResponse {
+  image_url: string;
+  was_translated: boolean;
+  original_prompt: string;
+  translated_prompt: string;
+  model_used: string;
+  image_url: string;
+}
 // Estilo personalizado para mantener proporción 1:1 (cuadrado)
 const SquareBox = styled(Box)({
   width: "100%",
@@ -40,10 +49,23 @@ const SquareBox = styled(Box)({
   borderRadius: 8,
 });
 
-const Img = styled("img")({
+const Img = styled("img", {
+  shouldForwardProp: (prop) => prop !== "hasError",
+})<{ hasError?: boolean }>(({ hasError }) => ({
   width: "100%",
   height: "100%",
   objectFit: "cover",
+  display: hasError ? "none" : "block",
+}));
+
+const ErrorPlaceholder = styled(Box)({
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundColor: "#f5f5f5",
+  color: "#757575",
 });
 
 export const Home = ({
@@ -60,6 +82,8 @@ export const Home = ({
   const [prompt, setPrompt] = useState("");
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const { isDownloading, downloadProgress, handleDownload } =
     useImageDownloader({
       imageUrl,
@@ -72,12 +96,21 @@ export const Home = ({
     providers: "5+ Providers",
     website: "github.com/black-forest-labs/flux",
   });
-
   const [translatePrompt, setTranslatePrompt] = useState(false);
+
+  const verifyImageUrl = async (url: string) => {
+    try {
+      const response = await fetch(url, { method: "HEAD" });
+      return response.ok;
+    } catch {
+      return false;
+    }
+  };
 
   const handleCheckbox = () => {
     setTranslatePrompt(!translatePrompt);
   };
+
   const handleHelpOpen = () => {
     setOpenHelp(true);
   };
@@ -85,6 +118,7 @@ export const Home = ({
   const handleHelpClose = () => {
     setOpenHelp(false);
   };
+
   const handleModel = (m: IModel) => {
     setModel(m);
   };
@@ -103,27 +137,39 @@ export const Home = ({
     setIsLoading(true);
     setImageUrl(null);
     setError("");
+    setImageError(false);
+    setImageLoaded(false);
 
     try {
       const apiUrl =
         "https://image-generator-app-one.vercel.app/generate-image";
-
       const fullPrompt = `${prompt}. ${styleDescriptions[styleType]}`;
 
-      const response = await axios.post<{ image_url: string }>(apiUrl, {
+      const response = await axios.post<IImageResponse>(apiUrl, {
         prompt: fullPrompt,
         translate_to_en: translatePrompt,
         model: model.name,
       });
 
-      const backendUrl = response.data.image_url;
-      const correctedUrl = backendUrl.replace(
-        // eslint-disable-next-line no-useless-escape
-        /^(https?:\/\/[^\/]+)(\/\d+)/,
-        "$1/dl$2"
+      console.log(response);
+      addRequestToDB(
+        response.data.original_prompt,
+        response.data.model_used,
+        response.data.was_translated,
+        response.data.translated_prompt
       );
+      const backendUrl = response.data.image_url;
 
-      setImageUrl(correctedUrl);
+      // Verificar si la URL es accesible antes de establecerla
+      const isValid = await verifyImageUrl(backendUrl);
+      if (!isValid) {
+        setError(
+          "La imagen generada no está disponible temporalmente. Por favor, inténtalo de nuevo."
+        );
+        return;
+      }
+
+      setImageUrl(backendUrl);
     } catch (err) {
       console.error(err);
       setError("Hubo un error al generar la imagen. Inténtalo nuevamente.");
@@ -265,7 +311,26 @@ export const Home = ({
           </SquareBox>
         ) : imageUrl ? (
           <SquareBox>
-            <Img src={imageUrl} alt="Imagen generada" />
+            <Img
+              src={imageUrl}
+              alt="Imagen generada"
+              hasError={imageError}
+              onLoad={() => {
+                setImageLoaded(true);
+                setImageError(false);
+              }}
+              onError={() => {
+                setImageError(true);
+                setError(
+                  "La imagen no se pudo cargar. Intenta recargar la página o generar una nueva imagen."
+                );
+              }}
+            />
+            {(!imageLoaded || imageError) && (
+              <ErrorPlaceholder>
+                <Typography>Error al cargar la imagen</Typography>
+              </ErrorPlaceholder>
+            )}
           </SquareBox>
         ) : (
           <Typography textAlign="center" color="text.secondary">
