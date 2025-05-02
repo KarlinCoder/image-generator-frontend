@@ -12,7 +12,6 @@ import {
   InputLabel,
   FormControl,
   MenuItem,
-  FormHelperText,
 } from "@mui/material";
 import { tips } from "../../utils/tips";
 import { useState } from "react";
@@ -218,6 +217,7 @@ export const Home = ({
               },
             }}
             sx={{
+              // fontSize: ".9rem",
               backgroundColor: "#0004",
               backdropFilter: "blur(10px)",
 
@@ -240,11 +240,10 @@ export const Home = ({
                 }}
               >
                 <FaPaintBrush />
-                {option}
+                <Typography fontSize=".9rem">{option}</Typography>
               </MenuItem>
             ))}
           </Select>
-          <FormHelperText>El estilo influye</FormHelperText>
         </FormControl>
 
         <Button

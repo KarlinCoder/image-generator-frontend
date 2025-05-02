@@ -8,6 +8,8 @@ import { Donate } from "./pages/Donate";
 import { useState } from "react";
 
 const Main = styled("main")({
+  // backgroundColor: "#0004",
+  backdropFilter: "blur(4px)",
   minHeight: "100dvh",
   display: "flex",
   flexDirection: "column",
