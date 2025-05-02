@@ -9,7 +9,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import FormControl from "@mui/material/FormControl";
 
 import { tips } from "../../utils/tips";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { IoMdDownload } from "react-icons/io";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 import axios from "axios";
@@ -75,9 +75,9 @@ export const Home = ({
 
   const [translatePrompt, setTranslatePrompt] = useState(false);
 
-  const handleCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
-    setTranslatePrompt(event.target.checked);
-    console.log(translatePrompt);
+  const handleCheckbox = () => {
+    setTranslatePrompt(!translatePrompt);
+    console.log(!translatePrompt);
   };
   const handleHelpOpen = () => {
     setOpenHelp(true);
