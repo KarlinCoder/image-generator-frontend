@@ -15,7 +15,7 @@ interface Props {
 
 export const ModelSelect: React.FC<Props> = ({ value, setValue }) => {
   const handleChange = (event: SelectChangeEvent) => {
-    const modelName = event.target.value as string;
+    const modelName = event.target.value;
     const selectedModel = modelsArray.find((model) => model.name === modelName);
     if (selectedModel) {
       setValue(selectedModel);
@@ -49,13 +49,18 @@ export const ModelSelect: React.FC<Props> = ({ value, setValue }) => {
         sx={{
           backgroundColor: "#0004",
           backdropFilter: "blur(10px)",
-
           "& .MuiSelect-select": {
             display: "flex",
             alignItems: "center",
             gap: "7px",
           },
         }}
+        renderValue={() => (
+          <Box sx={{ display: "flex", alignItems: "center", gap: "7px" }}>
+            <FaTools />
+            <Typography>{value.name}</Typography>
+          </Box>
+        )}
       >
         {modelsArray.map((modelItem) => (
           <MenuItem
