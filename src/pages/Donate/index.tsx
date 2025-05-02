@@ -1,14 +1,13 @@
-import {
-  Container,
-  Typography,
-  Box,
-  Button,
-  Paper,
-  Stack,
-  Divider,
-  useTheme,
-} from "@mui/material";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import Divider from "@mui/material/Divider";
+
 import { FaMobileAlt, FaHeart } from "react-icons/fa";
+import { useTheme } from "@mui/material";
 
 export const Donate = () => {
   const theme = useTheme();

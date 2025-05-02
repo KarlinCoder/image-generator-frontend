@@ -1,15 +1,13 @@
-import {
-  Container,
-  Typography,
-  Box,
-  Avatar,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Paper,
-  Link,
-  Divider,
-} from "@mui/material";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Avatar from "@mui/material/Avatar";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Paper from "@mui/material/Paper";
+import Link from "@mui/material/Link";
+import Divider from "@mui/material/Divider";
 import { ExpandMore } from "@mui/icons-material";
 
 export const About = () => {

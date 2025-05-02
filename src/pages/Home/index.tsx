@@ -1,15 +1,13 @@
-import {
-  Container,
-  Box,
-  TextField,
-  Button,
-  Skeleton,
-  styled,
-  Alert,
-  Typography,
-  LinearProgress,
-  FormControl,
-} from "@mui/material";
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Skeleton from "@mui/material/Skeleton";
+import Alert from "@mui/material/Alert";
+import Typography from "@mui/material/Typography";
+import LinearProgress from "@mui/material/LinearProgress";
+import FormControl from "@mui/material/FormControl";
+
 import { tips } from "../../utils/tips";
 import { useState } from "react";
 import { IoMdDownload } from "react-icons/io";
@@ -18,6 +16,8 @@ import axios from "axios";
 import { styleDescriptions } from "../../utils/styleDescriptions";
 import { StyleSelector } from "./components/StyleSelector";
 import { useImageDownloader } from "../../hooks/useImageDownloader";
+import { styled } from "@mui/material";
+import { translatePrompt } from "../../lib/translatePrompt";
 
 // Estilo personalizado para mantener proporción 1:1 (cuadrado)
 const SquareBox = styled(Box)({
@@ -69,6 +69,13 @@ export const Home = ({
     setIsLoading(true);
     setImageUrl(null);
     setError("");
+
+    try {
+      const translatedPrompt = await translatePrompt(prompt);
+      console.log(translatedPrompt);
+    } catch (err) {
+      console.log(err);
+    }
 
     try {
       const apiUrl =

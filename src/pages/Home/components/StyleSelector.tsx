@@ -1,10 +1,9 @@
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Typography,
-} from "@mui/material";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
+
 import { FaPaintBrush } from "react-icons/fa";
 import { styleOptions } from "../../../utils/styleOptions";
 
