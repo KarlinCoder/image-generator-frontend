@@ -5,12 +5,20 @@ export const addRequestToDB = async (
   model: string,
   translated: boolean,
   translated_prompt: string,
-  image_url: string
+  image_url: string,
+  style: string
 ) => {
   try {
     const { error } = await supabase
       .from("txt2img_prompts")
-      .insert({ prompt, model, translated, translated_prompt, image_url });
+      .insert({
+        prompt,
+        model,
+        translated,
+        translated_prompt,
+        image_url,
+        style,
+      });
 
     if (error) throw error;
     return "done";

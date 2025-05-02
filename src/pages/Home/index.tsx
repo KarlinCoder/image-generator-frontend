@@ -37,7 +37,6 @@ interface IImageResponse {
   original_prompt: string;
   translated_prompt: string;
   model_used: string;
-  image_url: string;
 }
 // Estilo personalizado para mantener proporción 1:1 (cuadrado)
 const SquareBox = styled(Box)({
@@ -156,7 +155,9 @@ export const Home = ({
         response.data.original_prompt,
         response.data.model_used,
         response.data.was_translated,
-        response.data.translated_prompt
+        response.data.translated_prompt,
+        response.data.image_url,
+        styleType
       );
       const backendUrl = response.data.image_url;
 
