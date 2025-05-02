@@ -70,7 +70,7 @@ export const Navbar = ({ isGenerating }: { isGenerating: boolean }) => {
   };
 
   const handleNavigation = (route: string) => {
-    if (isGenerating) {
+    if (isGenerating && route != "/") {
       setOpenDialog(true);
     } else {
       navigate(route);

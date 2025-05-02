@@ -2,11 +2,15 @@
   --sb-track-color: #232e33;
   --sb-thumb-color: #3865d0;
   --sb-size: 7px;
-  scrollbar-gutter: stable;
+
+  /* Solución para navegadores modernos */
+  scrollbar-gutter: auto;
 }
 
+/* WebKit (Chrome, Safari) */
 *::-webkit-scrollbar {
   width: var(--sb-size);
+  height: var(--sb-size);
 }
 
 *::-webkit-scrollbar-track {
@@ -19,8 +23,18 @@
   border-radius: 3px;
 }
 
+/* Firefox */
 @supports not selector(::-webkit-scrollbar) {
   * {
     scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+    scrollbar-width: thin;
+  }
+}
+
+/* Opcional: Para navegadores que soportan overlay (como Chrome) */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  html {
+    overflow-y: overlay;
+    overflow-x: overlay;
   }
 }

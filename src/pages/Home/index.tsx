@@ -3,10 +3,11 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Skeleton from "@mui/material/Skeleton";
-import Alert from "@mui/material/Alert";
 import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
 import FormControl from "@mui/material/FormControl";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 import { tips } from "../../utils/tips";
 import { useState } from "react";
@@ -38,6 +39,11 @@ interface IImageResponse {
   translated_prompt: string;
   model_used: string;
 }
+
+interface IApiError {
+  error: string;
+}
+
 // Estilo personalizado para mantener proporción 1:1 (cuadrado)
 const SquareBox = styled(Box)({
   width: "100%",
@@ -80,7 +86,11 @@ export const Home = ({
   const [isLoading, setIsLoading] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [error, setError] = useState("");
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "error" as "error" | "success" | "info" | "warning",
+  });
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const { isDownloading, downloadProgress, handleDownload } =
@@ -96,6 +106,26 @@ export const Home = ({
     website: "github.com/black-forest-labs/flux",
   });
   const [translatePrompt, setTranslatePrompt] = useState(false);
+
+  const showError = (message: string) => {
+    setSnackbar({
+      open: true,
+      message,
+      severity: "error",
+    });
+  };
+
+  const showSuccess = (message: string) => {
+    setSnackbar({
+      open: true,
+      message,
+      severity: "success",
+    });
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar((prev) => ({ ...prev, open: false }));
+  };
 
   const verifyImageUrl = async (url: string) => {
     try {
@@ -131,11 +161,14 @@ export const Home = ({
   };
 
   const handleGenerateImage = async () => {
-    if (!prompt.trim()) return;
+    if (!prompt.trim()) {
+      showError("Por favor, escribe un prompt para generar la imagen");
+      return;
+    }
+
     handleGenerating(true);
     setIsLoading(true);
     setImageUrl(null);
-    setError("");
     setImageError(false);
     setImageLoaded(false);
 
@@ -144,36 +177,58 @@ export const Home = ({
         "https://image-generator-app-one.vercel.app/generate-image";
       const fullPrompt = `${prompt}. ${styleDescriptions[styleType]}`;
 
-      const response = await axios.post<IImageResponse>(apiUrl, {
+      const response = await axios.post<IImageResponse | IApiError>(apiUrl, {
         prompt: fullPrompt,
         translate_to_en: translatePrompt,
         model: model.name,
       });
 
-      console.log(response);
+      // Verificar si la respuesta es un error
+      if ("error" in response.data) {
+        showError(response.data.error);
+        return;
+      }
+
+      // Si es una respuesta exitosa
+      const imageResponse = response.data as IImageResponse;
+      console.log(imageResponse);
+
       addRequestToDB(
-        response.data.original_prompt,
-        response.data.model_used,
-        response.data.was_translated,
-        response.data.translated_prompt,
-        response.data.image_url,
+        imageResponse.original_prompt,
+        imageResponse.model_used,
+        imageResponse.was_translated,
+        imageResponse.translated_prompt,
+        imageResponse.image_url,
         styleType
       );
-      const backendUrl = response.data.image_url;
 
       // Verificar si la URL es accesible antes de establecerla
-      const isValid = await verifyImageUrl(backendUrl);
+      const isValid = await verifyImageUrl(imageResponse.image_url);
       if (!isValid) {
-        setError(
+        showError(
           "La imagen generada no está disponible temporalmente. Por favor, inténtalo de nuevo."
         );
         return;
       }
 
-      setImageUrl(backendUrl);
+      setImageUrl(imageResponse.image_url);
+      showSuccess("¡Imagen generada con éxito!");
     } catch (err) {
       console.error(err);
-      setError("Hubo un error al generar la imagen. Inténtalo nuevamente.");
+
+      let errorMessage =
+        "Hubo un error al generar la imagen. Inténtalo nuevamente.";
+
+      if (axios.isAxiosError(err) && err.response) {
+        // Manejar errores de Axios con respuesta
+        const apiError = err.response.data as IApiError;
+        errorMessage = apiError.error || errorMessage;
+      } else if (err instanceof Error) {
+        // Manejar otros errores
+        errorMessage = err.message || errorMessage;
+      }
+
+      showError(errorMessage);
     } finally {
       setIsLoading(false);
       handleGenerating(false);
@@ -182,6 +237,22 @@ export const Home = ({
 
   return (
     <Container maxWidth="sm">
+      {/* Snackbar para mostrar mensajes */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+
       {/* Campo de texto y botón */}
       <Box
         sx={{
@@ -209,7 +280,7 @@ export const Home = ({
         {/* Selector de estilo */}
         <CSelect value={styleType} setValue={handleStyleType} />
         <ModelSelect value={model} setValue={handleModel} />
-        <Box sx={{ display: "flex", alignItems: "center", mr: "auto" }}>
+        <Box sx={{ display: "flex", alignItems: "center", mr: "auto", ml: 1 }}>
           <FormControlLabel
             control={
               <Checkbox checked={translatePrompt} onChange={handleCheckbox} />
@@ -245,7 +316,8 @@ export const Home = ({
                 sx: {
                   borderRadius: "12px",
                   maxWidth: "500px",
-                  backgroundColor: "#000c",
+                  backgroundImage:
+                    "radial-gradient(circle,rgba(37, 43, 84, 1) 0%, rgba(31, 26, 51, 1) 100%)",
                 },
               },
             }}
@@ -291,13 +363,6 @@ export const Home = ({
         </Button>
       </Box>
 
-      {/* Mostrar mensaje de error */}
-      {error && (
-        <Box sx={{ px: 2, mt: 2 }}>
-          <Alert severity="error">{error}</Alert>
-        </Box>
-      )}
-
       {/* Contenedor centralizado de imagen */}
       <Box
         sx={{
@@ -322,7 +387,7 @@ export const Home = ({
               }}
               onError={() => {
                 setImageError(true);
-                setError(
+                showError(
                   "La imagen no se pudo cargar. Intenta recargar la página o generar una nueva imagen."
                 );
               }}

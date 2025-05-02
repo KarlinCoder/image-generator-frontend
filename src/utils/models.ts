@@ -7,12 +7,6 @@ export interface IModel {
 
 export const models: Array<IModel> = [
   {
-    name: "sdxl-turbo",
-    base_provider: "Stability AI",
-    providers: "2+ Providers",
-    website: "huggingface.co",
-  },
-  {
     name: "sd-3.5",
     base_provider: "Stability AI",
     providers: "1+ Providers",
