@@ -16,9 +16,17 @@ import axios from "axios";
 import { styleDescriptions } from "../../utils/styleDescriptions";
 import { CSelect } from "./components/CSelect";
 import { useImageDownloader } from "../../hooks/useImageDownloader";
-import { styled } from "@mui/material";
+import {
+  Checkbox,
+  FormControlLabel,
+  IconButton,
+  styled,
+  Tooltip,
+} from "@mui/material";
 import { IModel } from "../../utils/models";
 import { ModelSelect } from "./components/ModelSelect";
+import { IoHelpBuoyOutline } from "react-icons/io5";
+import { Help } from "@mui/icons-material";
 
 // Estilo personalizado para mantener proporción 1:1 (cuadrado)
 const SquareBox = styled(Box)({
@@ -137,6 +145,28 @@ export const Home = ({
         {/* Selector de estilo */}
         <CSelect value={styleType} setValue={handleStyleType} />
         <ModelSelect value={model} setValue={handleModel} />
+        <Box sx={{ display: "flex", alignItems: "center", mr: "auto" }}>
+          <FormControlLabel
+            control={<Checkbox />}
+            label="Traducir resultados"
+            sx={{ mr: 1 }}
+            slotProps={{
+              typography: {
+                sx: { fontSize: ".9rem", mt: "2px", ml: "-4px" },
+              },
+            }}
+          />
+          <Tooltip
+            title="Ejemplo: Si generas 'a cat', se traducirá a 'un gato'"
+            arrow
+            placement="top"
+          >
+            <IconButton size="small" sx={{ p: 0, color: "text.secondary" }}>
+              <Help fontSize="small" />
+            </IconButton>
+          </Tooltip>
+        </Box>
+
         <Button
           onClick={handleGenerateImage}
           variant="contained"
