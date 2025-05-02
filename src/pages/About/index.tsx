@@ -14,7 +14,7 @@ import { ExpandMore } from "@mui/icons-material";
 
 export const About = () => {
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
+    <Container maxWidth="sm" sx={{ py: 4 }}>
       {/* Descripción general */}
       {/* Información del creador */}
       <Box

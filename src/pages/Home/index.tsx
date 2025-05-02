@@ -11,9 +11,7 @@ import {
   Select,
   InputLabel,
   FormControl,
-  List,
-  ListItem,
-  ListItemButton,
+  MenuItem,
 } from "@mui/material";
 import { tips } from "../../utils/tips";
 import { useState } from "react";
@@ -168,7 +166,7 @@ export const Home = ({
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="sm">
       {/* Campo de texto y botón */}
       <Box
         sx={{
@@ -205,20 +203,17 @@ export const Home = ({
               backdropFilter: "blur(10px)",
             }}
           >
-            <List disablePadding>
-              {styleOptions.map((option) => (
-                <ListItem
-                  key={option}
-                  value={option}
-                  sx={{
-                    backgroundColor: "#0004",
-                  }}
-                >
-                  {option}
-                  <ListItemButton>{option}</ListItemButton>
-                </ListItem>
-              ))}
-            </List>
+            {styleOptions.map((option) => (
+              <MenuItem
+                key={option}
+                value={option}
+                sx={{
+                  backgroundColor: "#0004",
+                }}
+              >
+                {option}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
 
