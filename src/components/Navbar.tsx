@@ -160,7 +160,7 @@ export const Navbar = ({ isGenerating }: { isGenerating: boolean }) => {
           ) : (
             <>
               <IconButton
-                size="small"
+                size="medium"
                 edge="end"
                 color="inherit"
                 onClick={handleMenu}
@@ -171,29 +171,32 @@ export const Navbar = ({ isGenerating }: { isGenerating: boolean }) => {
                   },
                 }}
               >
-                <MenuIcon fontSize="small" />
+                <MenuIcon fontSize="medium" />
               </IconButton>
               <Menu
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
-                PaperProps={{
-                  sx: {
-                    padding: 0,
-                    mt: 1.5,
-                    minWidth: 160,
-                    background: "rgba(10, 25, 60, 0.9)",
-                    backdropFilter: "blur(12px)",
-                    border: "1px solid rgba(0, 147, 255, 0.15)",
-                    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
-                    borderRadius: "12px",
-                    overflow: "hidden",
-                    "& .MuiMenuItem-root": {
-                      fontSize: "0.85rem",
-                      padding: "10px 16px",
-                      color: "#e6f7ff",
-                      "&:hover": {
-                        background: "rgba(0, 180, 255, 0.1)",
+                slotProps={{
+                  paper: {
+                    sx: {
+                      paddingLeft: "7px",
+                      mt: 1.5,
+                      minWidth: 160,
+                      background: "rgba(10, 25, 60, 0.9)",
+                      backdropFilter: "blur(12px)",
+                      border: "1px solid rgba(0, 147, 255, 0.15)",
+                      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
+                      borderRadius: "12px",
+                      overflow: "hidden",
+                      "& .MuiMenuItem-root": {
+                        fontSize: "0.85rem",
+                        padding: "10px 16px",
+                        color: "#e6f7ff",
+                        "&:hover": {
+                          background: "rgba(0, 180, 255, 0.1)",
+                        },
+                        borderRadius: 1,
                       },
                     },
                   },
