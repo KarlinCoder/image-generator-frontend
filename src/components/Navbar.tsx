@@ -38,6 +38,7 @@ const GlassAppBar = styled(AppBar)({
   backdropFilter: "blur(12px)",
   boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
   borderBottom: "1px solid rgba(0, 147, 255, 0.15)",
+  padding: "7px 20px",
 });
 
 // Botones minimalistas
