@@ -9,7 +9,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import FormControl from "@mui/material/FormControl";
 
 import { tips } from "../../utils/tips";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { IoMdDownload } from "react-icons/io";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 import axios from "axios";
@@ -18,10 +18,13 @@ import { CSelect } from "./components/CSelect";
 import { useImageDownloader } from "../../hooks/useImageDownloader";
 import {
   Checkbox,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   FormControlLabel,
   IconButton,
   styled,
-  Tooltip,
 } from "@mui/material";
 import { IModel } from "../../utils/models";
 import { ModelSelect } from "./components/ModelSelect";
@@ -61,6 +64,7 @@ export const Home = ({
     useImageDownloader({
       imageUrl,
     });
+  const [openHelp, setOpenHelp] = useState(false);
   const [styleType, setStyleType] = useState("Realista");
   const [model, setModel] = useState<IModel>({
     name: "flux",
@@ -69,6 +73,19 @@ export const Home = ({
     website: "github.com/black-forest-labs/flux",
   });
 
+  const [translatePrompt, setTranslatePrompt] = useState(false);
+
+  const handleCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
+    setTranslatePrompt(event.target.checked);
+    console.log(translatePrompt);
+  };
+  const handleHelpOpen = () => {
+    setOpenHelp(true);
+  };
+
+  const handleHelpClose = () => {
+    setOpenHelp(false);
+  };
   const handleModel = (m: IModel) => {
     setModel(m);
   };
@@ -96,6 +113,8 @@ export const Home = ({
 
       const response = await axios.post<{ image_url: string }>(apiUrl, {
         prompt: fullPrompt,
+        translate_to_en: translatePrompt,
+        model: model.name,
       });
 
       const backendUrl = response.data.image_url;
@@ -146,24 +165,73 @@ export const Home = ({
         <ModelSelect value={model} setValue={handleModel} />
         <Box sx={{ display: "flex", alignItems: "center", mr: "auto" }}>
           <FormControlLabel
-            control={<Checkbox />}
+            control={
+              <Checkbox checked={translatePrompt} onChange={handleCheckbox} />
+            }
             label="Traducir resultados"
-            sx={{ mr: 1 }}
             slotProps={{
               typography: {
                 sx: { fontSize: ".9rem", mt: "2px", ml: "-4px" },
               },
             }}
           />
-          <Tooltip
-            title="Ejemplo: Si generas 'a cat', se traducirá a 'un gato'"
-            arrow
-            placement="top"
+          <IconButton
+            onClick={handleHelpOpen}
+            size="small"
+            sx={{
+              color: "text.secondary",
+              "&:hover": {
+                color: "primary.main",
+                backgroundColor: "rgba(0, 0, 0, 0.04)",
+              },
+              ml: "-10px",
+            }}
           >
-            <IconButton size="small" sx={{ p: 0, color: "text.secondary" }}>
-              <Help fontSize="small" />
-            </IconButton>
-          </Tooltip>
+            <Help fontSize="small" />
+          </IconButton>
+
+          {/* Diálogo de ayuda */}
+          <Dialog
+            open={openHelp}
+            onClose={handleHelpClose}
+            slotProps={{
+              paper: {
+                sx: {
+                  borderRadius: "12px",
+                  maxWidth: "500px",
+                  backgroundColor: "#0002",
+                  backdropFilter: "blur(10px)",
+                },
+              },
+            }}
+          >
+            <DialogTitle sx={{ fontSize: "1rem", pb: 1 }}>
+              Función de Traducción Automática
+            </DialogTitle>
+            <DialogContent sx={{ pt: 0 }}>
+              <DialogContentText sx={{ fontSize: "0.9rem" }}>
+                Esta opción optimiza la generación de resultados mediante un
+                proceso de doble traducción:
+                <br />
+                <br />
+                <strong>1.</strong> Tu prompt se traduce al inglés para
+                garantizar la mejor comprensión por parte del motor de IA, ya
+                que este idioma ofrece los resultados más precisos.
+                <br />
+                <br />
+                <strong>2.</strong> Los resultados generados se traducen
+                automáticamente a tu idioma preferido.
+                <br />
+                <br />
+                <strong>Recomendación:</strong> Para máxima precisión, escribe
+                directamente en inglés cuando desactives esta opción.
+                <br />
+                <br />
+                <strong>Ejemplo:</strong> Al ingresar "un gato", el sistema
+                procesará "a cat" y devolverá los resultados traducidos.
+              </DialogContentText>
+            </DialogContent>
+          </Dialog>
         </Box>
 
         <Button
