@@ -142,7 +142,7 @@ export const Home = ({
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          py: 3,
+          py: 6,
         }}
       >
         <FormControl fullWidth>
