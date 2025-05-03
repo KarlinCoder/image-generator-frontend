@@ -317,6 +317,8 @@ export const Home = ({
               onClick={handleHelpOpen}
               size="small"
               sx={{
+                ml: "-15px",
+                scale: 0.8,
                 color: "text.secondary",
                 "&:hover": {
                   color: "primary.main",
@@ -347,6 +349,8 @@ export const Home = ({
               onClick={handleCustomPromptHelp}
               size="small"
               sx={{
+                ml: "-15px",
+                scale: 0.8,
                 color: "text.secondary",
                 "&:hover": {
                   color: "primary.main",
