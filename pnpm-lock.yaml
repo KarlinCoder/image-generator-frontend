@@ -38,9 +38,15 @@ importers:
       axios:
         specifier: ^1.9.0
         version: 1.9.0
+      cropperjs:
+        specifier: ^2.0.0
+        version: 2.0.0
       downloadjs:
         specifier: link:@type\downloadjs
         version: link:@type/downloadjs
+      kraken:
+        specifier: ^1.0.1
+        version: 1.0.1
       react:
         specifier: ^19.0.0
         version: 19.1.0
@@ -50,9 +56,15 @@ importers:
       react-icons:
         specifier: ^5.5.0
         version: 5.5.0(react@19.1.0)
+      react-image-crop:
+        specifier: ^11.0.10
+        version: 11.0.10(react@19.1.0)
       react-router:
         specifier: ^7.5.3
         version: 7.5.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react-toastify:
+        specifier: ^11.0.5
+        version: 11.0.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       zustand:
         specifier: ^5.0.3
         version: 5.0.3(@types/react@19.1.2)(react@19.1.0)
@@ -60,6 +72,9 @@ importers:
       '@eslint/js':
         specifier: ^9.22.0
         version: 9.25.1
+      '@types/cropperjs':
+        specifier: ^1.3.3
+        version: 1.3.3
       '@types/react':
         specifier: ^19.0.10
         version: 19.1.2
@@ -182,6 +197,39 @@ packages:
   '@babel/types@7.27.0':
     resolution: {integrity: sha512-H45s8fVLYjbhFH62dIJ3WtmJ6RSPt/3DRO0ZcT2SUiYiQyz3BLVb9ADEnLl91m74aQPS3AzzeajZHYOalWe3bg==}
     engines: {node: '>=6.9.0'}
+
+  '@cropper/element-canvas@2.0.0':
+    resolution: {integrity: sha512-GPtGJgSm92crJhhhwUsaMw3rz2KfJWWSz7kRAlufFEV/EHTP5+6r6/Z1BCGRna830i+Avqbm435XLOtA7PVJwA==}
+
+  '@cropper/element-crosshair@2.0.0':
+    resolution: {integrity: sha512-KfPfyrdeFvUC31Ws7ATtcalWWSaMtrC6bMoCipZhqbUOE7wZoL4ecDSL6BUOZxPa74awZUqfzirCDjHvheBfyw==}
+
+  '@cropper/element-grid@2.0.0':
+    resolution: {integrity: sha512-i78SQ0IJTLFveKX6P7svkfMYVdgHrQ8ZmmEw8keFy9n1ZVbK+SK0UHK5FNMRNI/gtVhKJOGEnK/zeyjUdj4Iyw==}
+
+  '@cropper/element-handle@2.0.0':
+    resolution: {integrity: sha512-ZJvW+0MkK9E8xYymGdoruaQn2kwjSHFpNSWinjyq6csuVQiCPxlX5ovAEDldmZ9MWePPtWEi3vLKQOo2Yb0T8g==}
+
+  '@cropper/element-image@2.0.0':
+    resolution: {integrity: sha512-9BxiTS/aHRmrjopaFQb9mQQXmx4ruhYHGkDZMVz24AXpMFjUY6OpqrWse/WjzD9tfhMFvEdu17b3VAekcAgpeg==}
+
+  '@cropper/element-selection@2.0.0':
+    resolution: {integrity: sha512-ensNnbIfJsJ8bhbJTH/RXtk2URFvTOO4TvfRk461n2FPEC588D7rwBmUJxQg74IiTi4y1JbCI+6j+4LyzYBLCQ==}
+
+  '@cropper/element-shade@2.0.0':
+    resolution: {integrity: sha512-jv/2bbNZnhU4W+T4G0c8ADocLIZvQFTXgCf2RFDNhI5UVxurzWBnDdb8Mx8LnVplnkTqO+xUmHZYve0CwgWo+Q==}
+
+  '@cropper/element-viewer@2.0.0':
+    resolution: {integrity: sha512-zY+3VRN5TvpM8twlphYtXw0tzJL2VgzeK7ufhL1BixVqOdRxwP13TprYIhqwGt9EW/SyJZUiaIu396T89kRX8A==}
+
+  '@cropper/element@2.0.0':
+    resolution: {integrity: sha512-lsthn0nQq73GExUE7Mg/ss6Q3RXADGDv055hxoLFwvl/wGHgy6ZkYlfLZ/VmgBHC6jDK5IgPBFnqrPqlXWSGBA==}
+
+  '@cropper/elements@2.0.0':
+    resolution: {integrity: sha512-PQkPo1nUjxLFUQuHYu+6atfHxpX9B41Xribao6wpvmvmNIFML6LQdNqqWYb6LyM7ujsu71CZdBiMT5oetjJVoQ==}
+
+  '@cropper/utils@2.0.0':
+    resolution: {integrity: sha512-cprLYr+7kK3faGgoOsTW9gIn5sefDr2KwOmgyjzIXk+8PLpW8FgFKEg5FoWfRD5zMAmkCBuX6rGKDK3VdUEGrg==}
 
   '@emotion/babel-plugin@11.13.5':
     resolution: {integrity: sha512-pxHCpT2ex+0q+HH91/zsdHkw/lXd468DIN2zvfvLtPKLLMo6gQj7oLObq8PhkrxOZb/gGCq03S3Z7PDhS8pduQ==}
@@ -715,6 +763,10 @@ packages:
   '@types/babel__traverse@7.20.7':
     resolution: {integrity: sha512-dkO5fhS7+/oos4ciWxyEyjWe48zmG6wbCheo/G2ZnHx4fs3EU6YC6UM8rk56gAjNJ9P3MTH2jo5jb92/K6wbng==}
 
+  '@types/cropperjs@1.3.3':
+    resolution: {integrity: sha512-xpX516HBzuFpvprQAB+djtV89eYBGhN8Hxw5jM2DPVW6VMmxW1y2keOcna2sKhlFO+QlqpzaJOINQGvX8ai5WQ==}
+    deprecated: This is a stub types definition. cropperjs provides its own type definitions, so you do not need this installed.
+
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
 
@@ -825,6 +877,9 @@ packages:
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
+  axios@0.24.0:
+    resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
+
   axios@1.9.0:
     resolution: {integrity: sha512-re4CqKTJaURpzbLHtIi6XpDv20/CnpXOtjRY5/CU32L8gU8ek9UIivcfvSWvmKEngmVbrUtPpdDwWDWL7DNHvg==}
 
@@ -899,6 +954,9 @@ packages:
   cosmiconfig@7.1.0:
     resolution: {integrity: sha512-AdmX6xUzdNASswsFtmwSt7Vj8po9IuqXm0UXz7QKPuEUmPB4XyjGfaAr2PSuELMwkRMVH1EpIkX5bTZGRB3eCA==}
     engines: {node: '>=10'}
+
+  cropperjs@2.0.0:
+    resolution: {integrity: sha512-TO2j0Qre01kPHbow4FuTrbdEB4jTmGRySxW49jyEIqlJZuEBfrvCTT0vC3eRB2WBXudDfKi1Onako6DKWKxeAQ==}
 
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
@@ -1209,6 +1267,9 @@ packages:
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
+  kraken@1.0.1:
+    resolution: {integrity: sha512-UWyab1UDbL2+z1Lc1X6XIUAXZyqbfg7P09UvsVobhVH1Ybn1DWCedevvn3WEQP16g0Wcpx2mPVwIhPL4YJ7Pzw==}
+
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
@@ -1352,6 +1413,11 @@ packages:
     peerDependencies:
       react: '*'
 
+  react-image-crop@11.0.10:
+    resolution: {integrity: sha512-+5FfDXUgYLLqBh1Y/uQhIycpHCbXkI50a+nbfkB1C0xXXUTwkisHDo2QCB1SQJyHCqIuia4FeyReqXuMDKWQTQ==}
+    peerDependencies:
+      react: '>=16.13.1'
+
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -1371,6 +1437,12 @@ packages:
     peerDependenciesMeta:
       react-dom:
         optional: true
+
+  react-toastify@11.0.5:
+    resolution: {integrity: sha512-EpqHBGvnSTtHYhCPLxML05NLY2ZX0JURbAdNYa6BUkk+amz4wbKBQvoKQAB0ardvSarUBuY4Q4s1sluAzZwkmA==}
+    peerDependencies:
+      react: ^18 || ^19
+      react-dom: ^18 || ^19
 
   react-transition-group@4.4.5:
     resolution: {integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==}
@@ -1716,6 +1788,72 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
+
+  '@cropper/element-canvas@2.0.0':
+    dependencies:
+      '@cropper/element': 2.0.0
+      '@cropper/utils': 2.0.0
+
+  '@cropper/element-crosshair@2.0.0':
+    dependencies:
+      '@cropper/element': 2.0.0
+      '@cropper/utils': 2.0.0
+
+  '@cropper/element-grid@2.0.0':
+    dependencies:
+      '@cropper/element': 2.0.0
+      '@cropper/utils': 2.0.0
+
+  '@cropper/element-handle@2.0.0':
+    dependencies:
+      '@cropper/element': 2.0.0
+      '@cropper/utils': 2.0.0
+
+  '@cropper/element-image@2.0.0':
+    dependencies:
+      '@cropper/element': 2.0.0
+      '@cropper/element-canvas': 2.0.0
+      '@cropper/utils': 2.0.0
+
+  '@cropper/element-selection@2.0.0':
+    dependencies:
+      '@cropper/element': 2.0.0
+      '@cropper/element-canvas': 2.0.0
+      '@cropper/element-image': 2.0.0
+      '@cropper/utils': 2.0.0
+
+  '@cropper/element-shade@2.0.0':
+    dependencies:
+      '@cropper/element': 2.0.0
+      '@cropper/element-canvas': 2.0.0
+      '@cropper/element-selection': 2.0.0
+      '@cropper/utils': 2.0.0
+
+  '@cropper/element-viewer@2.0.0':
+    dependencies:
+      '@cropper/element': 2.0.0
+      '@cropper/element-canvas': 2.0.0
+      '@cropper/element-image': 2.0.0
+      '@cropper/element-selection': 2.0.0
+      '@cropper/utils': 2.0.0
+
+  '@cropper/element@2.0.0':
+    dependencies:
+      '@cropper/utils': 2.0.0
+
+  '@cropper/elements@2.0.0':
+    dependencies:
+      '@cropper/element': 2.0.0
+      '@cropper/element-canvas': 2.0.0
+      '@cropper/element-crosshair': 2.0.0
+      '@cropper/element-grid': 2.0.0
+      '@cropper/element-handle': 2.0.0
+      '@cropper/element-image': 2.0.0
+      '@cropper/element-selection': 2.0.0
+      '@cropper/element-shade': 2.0.0
+      '@cropper/element-viewer': 2.0.0
+
+  '@cropper/utils@2.0.0': {}
 
   '@emotion/babel-plugin@11.13.5':
     dependencies:
@@ -2181,6 +2319,10 @@ snapshots:
     dependencies:
       '@babel/types': 7.27.0
 
+  '@types/cropperjs@1.3.3':
+    dependencies:
+      cropperjs: 2.0.0
+
   '@types/estree@1.0.7': {}
 
   '@types/json-schema@7.0.15': {}
@@ -2320,6 +2462,12 @@ snapshots:
 
   asynckit@0.4.0: {}
 
+  axios@0.24.0:
+    dependencies:
+      follow-redirects: 1.15.9
+    transitivePeerDependencies:
+      - debug
+
   axios@1.9.0:
     dependencies:
       follow-redirects: 1.15.9
@@ -2403,6 +2551,11 @@ snapshots:
       parse-json: 5.2.0
       path-type: 4.0.0
       yaml: 1.10.2
+
+  cropperjs@2.0.0:
+    dependencies:
+      '@cropper/elements': 2.0.0
+      '@cropper/utils': 2.0.0
 
   cross-spawn@7.0.6:
     dependencies:
@@ -2718,6 +2871,13 @@ snapshots:
     dependencies:
       json-buffer: 3.0.1
 
+  kraken@1.0.1:
+    dependencies:
+      axios: 0.24.0
+      form-data: 4.0.2
+    transitivePeerDependencies:
+      - debug
+
   levn@0.4.1:
     dependencies:
       prelude-ls: 1.2.1
@@ -2843,6 +3003,10 @@ snapshots:
     dependencies:
       react: 19.1.0
 
+  react-image-crop@11.0.10(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+
   react-is@16.13.1: {}
 
   react-is@19.1.0: {}
@@ -2856,6 +3020,12 @@ snapshots:
       set-cookie-parser: 2.7.1
       turbo-stream: 2.4.0
     optionalDependencies:
+      react-dom: 19.1.0(react@19.1.0)
+
+  react-toastify@11.0.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+    dependencies:
+      clsx: 2.1.1
+      react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
   react-transition-group@4.4.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0):

@@ -10,9 +10,10 @@ import { styleOptions } from "../../../utils/styleOptions";
 interface Props {
   value: string;
   setValue: (style: string) => void;
+  disabled?: boolean;
 }
 
-export const CSelect: React.FC<Props> = ({ value, setValue }) => {
+export const CSelect: React.FC<Props> = ({ value, setValue, disabled }) => {
   return (
     <FormControl fullWidth sx={{ mt: 2 }}>
       <InputLabel id="style-select-label">Estilo:</InputLabel>
@@ -20,8 +21,9 @@ export const CSelect: React.FC<Props> = ({ value, setValue }) => {
         labelId="style-select-label"
         value={value}
         label="Estilo:"
-        onChange={(e) => setValue(e.target.value as string)}
+        onChange={(e) => !disabled && setValue(e.target.value as string)}
         size="small"
+        disabled={disabled}
         MenuProps={{
           slotProps: {
             paper: {
@@ -40,11 +42,15 @@ export const CSelect: React.FC<Props> = ({ value, setValue }) => {
         sx={{
           backgroundColor: "#0004",
           backdropFilter: "blur(10px)",
-
+          cursor: disabled ? "not-allowed" : "pointer",
           "& .MuiSelect-select": {
             display: "flex",
             alignItems: "center",
             gap: "7px",
+            cursor: disabled ? "not-allowed" : "pointer",
+          },
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: disabled ? "rgba(255, 255, 255, 0.23)" : "",
           },
         }}
       >
@@ -57,6 +63,12 @@ export const CSelect: React.FC<Props> = ({ value, setValue }) => {
               display: "flex",
               gap: "7px",
               alignItems: "center",
+              cursor: disabled ? "not-allowed" : "pointer",
+              "&:hover": {
+                backgroundColor: disabled
+                  ? "inherit"
+                  : "rgba(255, 255, 255, 0.08)",
+              },
             }}
           >
             <FaPaintBrush />

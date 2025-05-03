@@ -1,3 +1,4 @@
+// App.tsx
 import { Route, Routes } from "react-router";
 import { Navbar } from "./components/Navbar";
 import { Home } from "./pages/Home";
@@ -8,7 +9,6 @@ import { Donate } from "./pages/Donate";
 import { useState } from "react";
 
 const Main = styled("main")({
-  // backgroundColor: "#0004",
   backdropFilter: "blur(4px)",
   minHeight: "100dvh",
   display: "flex",

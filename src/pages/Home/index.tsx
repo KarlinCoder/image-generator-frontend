@@ -6,9 +6,11 @@ import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
 import FormControl from "@mui/material/FormControl";
-import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-
+import Collapse from "@mui/material/Collapse";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import { styled } from "@mui/material/styles";
 import { tips } from "../../utils/tips";
 import { useState } from "react";
 import { IoMdDownload } from "react-icons/io";
@@ -24,8 +26,6 @@ import {
   DialogContentText,
   DialogTitle,
   FormControlLabel,
-  IconButton,
-  styled,
 } from "@mui/material";
 import { IModel } from "../../utils/models";
 import { ModelSelect } from "./components/ModelSelect";
@@ -44,7 +44,6 @@ interface IApiError {
   error: string;
 }
 
-// Estilo personalizado para mantener proporción 1:1 (cuadrado)
 const SquareBox = styled(Box)({
   width: "100%",
   maxWidth: "552px",
@@ -86,18 +85,12 @@ export const Home = ({
   const [isLoading, setIsLoading] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "error" as "error" | "success" | "info" | "warning",
-  });
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const { isDownloading, downloadProgress, handleDownload } =
-    useImageDownloader({
-      imageUrl,
-    });
+    useImageDownloader({ imageUrl });
   const [openHelp, setOpenHelp] = useState(false);
+  const [openCusstomPromptHelp, setOpenCusstomPromptHelp] = useState(false);
   const [styleType, setStyleType] = useState("Realista");
   const [model, setModel] = useState<IModel>({
     name: "flux",
@@ -106,25 +99,26 @@ export const Home = ({
     website: "github.com/black-forest-labs/flux",
   });
   const [translatePrompt, setTranslatePrompt] = useState(false);
+  const [alert, setAlert] = useState({
+    open: false,
+    message: "",
+    severity: "success" as "error" | "success" | "info" | "warning",
+  });
+
+  const [customPrompt, setCustomPrompt] = useState(false);
 
   const showError = (message: string) => {
-    setSnackbar({
-      open: true,
-      message,
-      severity: "error",
-    });
+    setAlert({ open: true, message, severity: "error" });
+    setTimeout(() => setAlert((prev) => ({ ...prev, open: false })), 6000);
   };
 
   const showSuccess = (message: string) => {
-    setSnackbar({
-      open: true,
-      message,
-      severity: "success",
-    });
+    setAlert({ open: true, message, severity: "success" });
+    setTimeout(() => setAlert((prev) => ({ ...prev, open: false })), 4000);
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackbar((prev) => ({ ...prev, open: false }));
+  const handleCloseAlert = () => {
+    setAlert((prev) => ({ ...prev, open: false }));
   };
 
   const verifyImageUrl = async (url: string) => {
@@ -142,6 +136,14 @@ export const Home = ({
 
   const handleHelpOpen = () => {
     setOpenHelp(true);
+  };
+
+  const handleCustomPromptHelp = () => {
+    setOpenCusstomPromptHelp(true);
+  };
+
+  const handleCustomPromptHelpClose = () => {
+    setOpenCusstomPromptHelp(false);
   };
 
   const handleHelpClose = () => {
@@ -175,7 +177,13 @@ export const Home = ({
     try {
       const apiUrl =
         "https://image-generator-app-one.vercel.app/generate-image";
-      const fullPrompt = `${prompt}. ${styleDescriptions[styleType]}`;
+      let fullPrompt = "";
+
+      if (customPrompt) {
+        fullPrompt = `${prompt}`;
+      } else {
+        fullPrompt = `${prompt}. ${styleDescriptions[styleType]}`;
+      }
 
       const response = await axios.post<IImageResponse | IApiError>(apiUrl, {
         prompt: fullPrompt,
@@ -183,13 +191,11 @@ export const Home = ({
         model: model.name,
       });
 
-      // Verificar si la respuesta es un error
       if ("error" in response.data) {
         showError(response.data.error);
         return;
       }
 
-      // Si es una respuesta exitosa
       const imageResponse = response.data as IImageResponse;
       console.log(imageResponse);
 
@@ -202,7 +208,6 @@ export const Home = ({
         styleType
       );
 
-      // Verificar si la URL es accesible antes de establecerla
       const isValid = await verifyImageUrl(imageResponse.image_url);
       if (!isValid) {
         showError(
@@ -215,16 +220,13 @@ export const Home = ({
       showSuccess("¡Imagen generada con éxito!");
     } catch (err) {
       console.error(err);
-
       let errorMessage =
         "Hubo un error al generar la imagen. Inténtalo nuevamente.";
 
       if (axios.isAxiosError(err) && err.response) {
-        // Manejar errores de Axios con respuesta
         const apiError = err.response.data as IApiError;
         errorMessage = apiError.error || errorMessage;
       } else if (err instanceof Error) {
-        // Manejar otros errores
         errorMessage = err.message || errorMessage;
       }
 
@@ -236,29 +238,45 @@ export const Home = ({
   };
 
   return (
-    <Container maxWidth="sm">
-      {/* Snackbar para mostrar mensajes */}
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+    <Container maxWidth="sm" sx={{ position: "relative", overflowX: "hidden" }}>
+      {/* Notification Alert */}
+      <Box
+        sx={{
+          position: "fixed",
+          top: 16,
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "90%",
+          maxWidth: "600px",
+          zIndex: 1400,
+        }}
       >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity={snackbar.severity}
-          sx={{ width: "100%" }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
+        <Collapse in={alert.open}>
+          <Alert
+            severity={alert.severity}
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={handleCloseAlert}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            }
+            sx={{ mb: 2, boxShadow: 3 }}
+          >
+            {alert.message}
+          </Alert>
+        </Collapse>
+      </Box>
 
-      {/* Campo de texto y botón */}
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          justifyContent: "start",
           py: 6,
         }}
       >
@@ -266,90 +284,200 @@ export const Home = ({
           <TextField
             label="Prompt:"
             value={prompt}
-            onChange={(event) => handlePrompt(event.target.value)}
+            onChange={(e) => handlePrompt(e.target.value)}
             multiline
             rows={4}
             placeholder={placeholderTip}
-            sx={{
-              backgroundColor: "#0004",
-              backdropFilter: "blur(10px)",
-            }}
+            sx={{ backgroundColor: "#0004", backdropFilter: "blur(10px)" }}
           />
         </FormControl>
-
-        {/* Selector de estilo */}
-        <CSelect value={styleType} setValue={handleStyleType} />
-        <ModelSelect value={model} setValue={handleModel} />
-        <Box sx={{ display: "flex", alignItems: "center", mr: "auto", ml: 1 }}>
-          <FormControlLabel
-            control={
-              <Checkbox checked={translatePrompt} onChange={handleCheckbox} />
-            }
-            label="Traducir resultados"
-            slotProps={{
-              typography: {
-                sx: { fontSize: ".9rem", mt: "2px", ml: "-4px" },
-              },
-            }}
-          />
-          <IconButton
-            onClick={handleHelpOpen}
-            size="small"
-            sx={{
-              color: "text.secondary",
-              "&:hover": {
-                color: "primary.main",
-                backgroundColor: "rgba(0, 0, 0, 0.04)",
-              },
-              ml: "-10px",
-            }}
-          >
-            <Help fontSize="small" />
-          </IconButton>
-
-          {/* Diálogo de ayuda */}
-          <Dialog
-            open={openHelp}
-            onClose={handleHelpClose}
-            slotProps={{
-              paper: {
-                sx: {
-                  borderRadius: "12px",
-                  maxWidth: "500px",
-                  backgroundImage:
-                    "radial-gradient(circle,rgba(37, 43, 84, 1) 0%, rgba(31, 26, 51, 1) 100%)",
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            width: "100%",
+            pl: 1,
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <FormControlLabel
+              control={
+                <Checkbox checked={translatePrompt} onChange={handleCheckbox} />
+              }
+              label="Traducir resultados"
+              sx={{ marginLeft: 0 }}
+              slotProps={{
+                typography: {
+                  sx: { fontSize: ".9rem", mt: "2px" },
                 },
+              }}
+            />
+            <IconButton
+              onClick={handleHelpOpen}
+              size="small"
+              sx={{
+                color: "text.secondary",
+                "&:hover": {
+                  color: "primary.main",
+                  backgroundColor: "rgba(0, 0, 0, 0.04)",
+                },
+              }}
+            >
+              <Help fontSize="small" />
+            </IconButton>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={customPrompt}
+                  onChange={() => setCustomPrompt(!customPrompt)}
+                />
+              }
+              label="Prompt personalizado"
+              sx={{ marginLeft: 0 }}
+              slotProps={{
+                typography: {
+                  sx: { fontSize: ".9rem", mt: "2px" },
+                },
+              }}
+            />
+            <IconButton
+              onClick={handleCustomPromptHelp}
+              size="small"
+              sx={{
+                color: "text.secondary",
+                "&:hover": {
+                  color: "primary.main",
+                  backgroundColor: "rgba(0, 0, 0, 0.04)",
+                },
+              }}
+            >
+              <Help fontSize="small" />
+            </IconButton>
+          </Box>
+        </Box>
+
+        <Dialog
+          open={openCusstomPromptHelp}
+          onClose={handleCustomPromptHelpClose}
+          slotProps={{
+            paper: {
+              sx: {
+                borderRadius: "12px",
+                maxWidth: "500px",
+                backgroundImage:
+                  "radial-gradient(circle, rgba(37, 43, 84, 1) 0%, rgba(31, 26, 51, 1) 100%)",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
               },
+            },
+          }}
+        >
+          <DialogTitle
+            sx={{
+              fontSize: "1rem",
+              pb: 1,
+              display: "flex",
+              alignItems: "center",
             }}
           >
-            <DialogTitle sx={{ fontSize: "1rem", pb: 1 }}>
-              Función de Traducción Automática
-            </DialogTitle>
-            <DialogContent sx={{ pt: 0 }}>
-              <DialogContentText sx={{ fontSize: "0.9rem" }}>
-                Esta opción optimiza la generación de resultados mediante un
-                proceso de doble traducción:
-                <br />
-                <br />
-                <strong>1.</strong> Tu prompt se traduce al inglés para
-                garantizar la mejor comprensión por parte del motor de IA, ya
-                que este idioma ofrece los resultados más precisos.
-                <br />
-                <br />
-                <strong>2.</strong> Los resultados generados se traducen
-                automáticamente a tu idioma preferido.
-                <br />
-                <br />
-                <strong>Recomendación:</strong> Para máxima precisión, escribe
-                directamente en inglés cuando desactives esta opción.
-                <br />
-                <br />
-                <strong>Ejemplo:</strong> Al ingresar "un gato", el sistema
-                procesará "a cat" y devolverá los resultados traducidos.
-              </DialogContentText>
-            </DialogContent>
-          </Dialog>
-        </Box>
+            <FaWandMagicSparkles style={{ marginRight: "8px" }} />
+            Modo Prompt Avanzado
+          </DialogTitle>
+          <DialogContent sx={{ pt: 0 }}>
+            <DialogContentText sx={{ fontSize: "0.9rem", lineHeight: "1.6" }}>
+              <strong>Control total sobre tus generaciones</strong>
+              <br />
+              <br />
+              Al activar esta opción:
+              <ul style={{ paddingLeft: "20px", margin: "8px 0" }}>
+                <li>Crearás prompts sin estilos predefinidos</li>
+                <li>Tendrás libertad absoluta en la descripción</li>
+                <li>Perfecto para necesidades específicas</li>
+              </ul>
+              <strong>Consejos clave:</strong>
+              <ul style={{ paddingLeft: "20px", margin: "8px 0 16px" }}>
+                <li>Sé detallado: estilo, composición y técnica</li>
+                <li>Usa términos artísticos precisos</li>
+                <li>Menciona medios (ej: "acuarela", "3D render")</li>
+                <li>Referencia iluminación o artistas si aplica</li>
+              </ul>
+              <Typography variant="caption" sx={{ fontStyle: "italic" }}>
+                Ideal para usuarios que buscan máximo control creativo.
+              </Typography>
+            </DialogContentText>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog
+          open={openHelp}
+          onClose={handleHelpClose}
+          slotProps={{
+            paper: {
+              sx: {
+                borderRadius: "12px",
+                maxWidth: "500px",
+                backgroundImage:
+                  "radial-gradient(circle, rgba(37, 43, 84, 1) 0%, rgba(31, 26, 51, 1) 100%)",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+              },
+            },
+          }}
+        >
+          <DialogTitle
+            sx={{
+              fontSize: "1rem",
+              pb: 1,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <FaWandMagicSparkles style={{ marginRight: "8px" }} />
+            Función de Traducción Automática
+          </DialogTitle>
+          <DialogContent sx={{ pt: 0 }}>
+            <DialogContentText sx={{ fontSize: "0.9rem", lineHeight: "1.6" }}>
+              <strong>
+                Optimización de resultados mediante traducción inteligente
+              </strong>
+              <br />
+              <br />
+              Esta función utiliza un proceso de doble traducción para mejorar
+              la calidad:
+              <ul style={{ paddingLeft: "20px", margin: "8px 0" }}>
+                <li>
+                  <strong>1.</strong> Tu prompt se traduce al inglés para
+                  maximizar la comprensión por los modelos de IA
+                </li>
+                <li>
+                  <strong>2.</strong> Los resultados se traducen de vuelta a tu
+                  idioma manteniendo el contexto original
+                </li>
+              </ul>
+              <strong>Beneficios clave:</strong>
+              <ul style={{ paddingLeft: "20px", margin: "8px 0 16px" }}>
+                <li>Mayor precisión en la generación de imágenes</li>
+                <li>Conservación del significado original</li>
+                <li>Resultados más coherentes con tu intención creativa</li>
+              </ul>
+              <Typography variant="caption" sx={{ fontStyle: "italic" }}>
+                Recomendación: Para máxima fidelidad con prompts técnicos,
+                escribe directamente en inglés desactivando esta opción.
+              </Typography>
+            </DialogContentText>
+          </DialogContent>
+        </Dialog>
+
+        <ModelSelect value={model} setValue={handleModel} />
+
+        {!customPrompt && (
+          <CSelect
+            disabled={customPrompt}
+            value={styleType}
+            setValue={handleStyleType}
+          />
+        )}
 
         <Button
           onClick={handleGenerateImage}
@@ -363,14 +491,8 @@ export const Home = ({
         </Button>
       </Box>
 
-      {/* Contenedor centralizado de imagen */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          mb: 3,
-        }}
-      >
+      {/* Image Display Section */}
+      <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
         {isLoading ? (
           <SquareBox>
             <Skeleton variant="rectangular" width="100%" height="100%" />
@@ -405,7 +527,7 @@ export const Home = ({
         )}
       </Box>
 
-      {/* Botón de descarga con progress bar */}
+      {/* Download Section */}
       {!isLoading && imageUrl && (
         <Box sx={{ width: "100%", mb: 4 }}>
           {isDownloading && (
@@ -430,7 +552,7 @@ export const Home = ({
             fullWidth
             variant="contained"
             startIcon={<IoMdDownload />}
-            sx={{ mt: isDownloading ? 1 : -2 }}
+            sx={{ mt: 1 }}
             onClick={handleDownload}
             disabled={isDownloading}
           >
